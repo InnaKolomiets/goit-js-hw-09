@@ -17,6 +17,12 @@
       background-color: #aab0ab;
     }
 
+    button:disabled {
+      cursor: not-allowed;
+      background-color: #bebdb2;
+      color: #000;
+    }
+
     .timer {
       display: flex;
     }

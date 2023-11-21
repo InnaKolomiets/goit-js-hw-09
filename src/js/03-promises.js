@@ -23,14 +23,15 @@ function createPromise(position, delay) {
 }
 
 const promiseForm = document.querySelector('.form');
+const startButton = promiseForm.querySelector('button');
 
 const submitCallback = event => {
   event.preventDefault();
+  startButton.disabled = true;
 
   let delay = Number(promiseForm.querySelector('[name="delay"]').value);
   const step = Number(promiseForm.querySelector('[name="step"]').value);
   const amount = Number(promiseForm.querySelector('[name="amount"]').value);
-
   const runPromise = (position, delay) => {
     createPromise(position, delay)
       .then(({ position, delay }) => {
@@ -40,10 +41,15 @@ const submitCallback = event => {
       .catch(({ position, delay }) => {
         console.log(`❌ Rejected promise ${position} in ${delay}ms`);
         Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
+      })
+      .finally(() => {
+        if (position === amount) {
+          startButton.disabled = false;
+        }
       });
   };
 
-  for (i = 1; i <= amount; i++) {
+  for (let i = 1; i <= amount; ++i) {
     runPromise(i, delay);
     delay += step;
   }

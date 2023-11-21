@@ -48,14 +48,19 @@ function convertMs(ms) {
 }
 
 startButton.addEventListener('click', event => {
+  startButton.disabled = true;
   const parsedDate = Date.parse(selectedDate.value);
-  setInterval(() => {
-    const { days, hours, minutes, seconds } = convertMs(parsedDate - Date.now());
-    timerDays.textContent = addLeadingZero(days);
-    timerHours.textContent = addLeadingZero(hours);
-    timerMinutes.textContent = addLeadingZero(minutes);
-    timerSeconds.textContent = addLeadingZero(seconds);
+  const interval = setInterval(() => {
+      const { days, hours, minutes, seconds } = convertMs(parsedDate - Date.now());
+      timerDays.textContent = addLeadingZero(days);
+      timerHours.textContent = addLeadingZero(hours);
+      timerMinutes.textContent = addLeadingZero(minutes);
+      timerSeconds.textContent = addLeadingZero(seconds);
 
+      if (days + hours + minutes + seconds === 0) {
+        clearInterval(interval);
+        return;
+      }
     }, 1000);
 
 })
